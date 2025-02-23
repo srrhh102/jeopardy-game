@@ -1,4 +1,4 @@
-import random
+from random import Random
 
 def display_question(category, clue, answer):
     print(f"Category: {category}")
