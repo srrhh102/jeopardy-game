@@ -1,18 +1,30 @@
-from random import Random
+from random import shuffle
+from typing import List, Tuple
 
-def display_question(category, clue, answer):
-    print(f"Category: {category}")
-    print(f"Clue: {clue}")
-    user_answer = input("Your answer: ").strip().lower()
-    if user_answer == answer.lower():
-        print("Correct!")
-        return 1
-    else:
-        print(f"Incorrect! The correct answer was: {answer}")
-        return 0
+class QuizGame:
+    def __init__(self, questions: List[Tuple[str, str, str]]):
+        self.questions = questions
+        self.score = 0
 
-def play_game():
-    questions = [
+    def display_question(self, category: str, clue: str, answer: str) -> int:
+        print(f"Category: {category}")
+        print(f"Clue: {clue}")
+        user_answer = input("Your answer: ").strip().lower()
+        if user_answer == answer.lower():
+            print("Correct!")
+            return 1
+        else:
+            print(f"Incorrect! The correct answer was: {answer}")
+            return 0
+
+    def play_game(self):
+        shuffle(self.questions)
+        for category, clue, answer in self.questions:
+            self.score += self.display_question(category, clue, answer)
+        print(f"Game Over! Your final score: {self.score}/{len(self.questions)}")
+
+if __name__ == "__main__":
+    QUESTIONS = [
         ("Word Origins", "This word for a false statement comes from the Latin 'falsus'.", "False"),
         ("Rhyme Time", "A feline that sits on a mat.", "Cat on a mat"),
         ("Synonyms", "A synonym for 'happy' that starts with 'J'.", "Joyful"),
@@ -20,13 +32,5 @@ def play_game():
         ("Homophones", "A type of meat and an official document sound alike.", "Steak and Stake")
     ]
     
-    random.shuffle(questions)
-    score = 0
-    
-    for category, clue, answer in questions:
-        score += display_question(category, clue, answer)
-    
-    print(f"Game Over! Your final score: {score}/{len(questions)}")
-
-if __name__ == "__main__":
-    play_game()
+    game = QuizGame(QUESTIONS)
+    game.play_game()
